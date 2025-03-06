@@ -25,7 +25,6 @@ _ide_helper_models.php
 Thumbs.db
 
 # Build files
-/public/build/
 /public/dist/
 /public/mix-manifest.json
 
@@ -79,5 +78,4 @@ composer.phar
 /bootstrap/cache/packages.php
 /bootstrap/cache/services.php
 /node_modules/
-/public/build/
 /public/hot/
