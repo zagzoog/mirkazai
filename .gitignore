@@ -71,7 +71,6 @@ composer.phar
 *.war
 *.ear
 *.pkg
-*.sql
 *.sqlite
 *.db
 
