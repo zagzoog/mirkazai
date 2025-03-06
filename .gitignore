@@ -8,9 +8,6 @@ yarn-error.log
 /public/storage
 /storage/*.key
 /storage/logs/*
-/storage/framework/cache/*
-/storage/framework/sessions/*
-/storage/framework/views/*
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
