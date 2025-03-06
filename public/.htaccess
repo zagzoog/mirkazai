@@ -1,0 +1,45 @@
+Options +FollowSymLinks -Indexes
+Allow from all
+Require all granted
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# PHP Settings
+<IfModule mod_php.c>
+    php_flag display_errors on
+    php_value max_execution_time 300
+    php_value max_input_time 300
+    php_value max_input_vars 10000
+    php_value memory_limit 256M
+    php_value post_max_size 256M
+    php_value upload_max_filesize 256M
+    
+    # Add these lines for debugging
+    php_flag log_errors on
+    php_value error_log "C:/Users/zagzo/Downloads/UniServerZ/logs/php_error.log"
+</IfModule>
+
+# Enable Cross-Origin Resource Sharing
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET,POST,OPTIONS,DELETE,PUT"
+    Header set Access-Control-Allow-Headers "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization"
+</IfModule>
+
+DirectoryIndex index.php

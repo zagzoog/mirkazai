@@ -1,0 +1,24 @@
+Options +FollowSymLinks
+Options +Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# PHP Settings
+php_flag display_startup_errors off
+php_flag display_errors off
+php_value error_reporting 0
+
+# Allow access
+Order Allow,Deny
+Allow from all
+
+# Protect sensitive files
+<FilesMatch "^\.">
+    Order deny,allow
+    Deny from all
+</FilesMatch>

@@ -1,0 +1,86 @@
+/vendor/
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Laravel specific
+/public/hot
+/public/storage
+/storage/*.key
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+
+# IDE specific
+/.idea
+/.vscode
+/.vagrant
+.phpstorm.meta.php
+_ide_helper.php
+_ide_helper_models.php
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Build files
+/public/build/
+/public/dist/
+/public/mix-manifest.json
+
+# Local development
+docker-compose.override.yml
+*.log
+*.sqlite
+.php-cs-fixer.cache
+
+# Testing
+/coverage/
+.phpunit.cache
+
+# Composer
+composer.phar
+/vendor/
+
+# Large files and media
+*.zip
+*.gz
+*.tar
+*.rar
+*.7z
+*.mp4
+*.mp3
+*.wav
+*.avi
+*.mov
+*.wmv
+*.flv
+*.psd
+*.ai
+*.pdf
+*.iso
+*.dmg
+*.exe
+*.dll
+*.so
+*.jar
+*.war
+*.ear
+*.pkg
+*.sql
+*.sqlite
+*.db
+
+# Specific folders that might contain large files
+/public/uploads/
+/storage/app/public/
+/storage/app/uploads/
+/public/vendor/
+/bootstrap/cache/
+/node_modules/
+/public/build/
+/public/hot/
