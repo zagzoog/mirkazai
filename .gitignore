@@ -79,7 +79,8 @@ composer.phar
 /storage/app/public/
 /storage/app/uploads/
 /public/vendor/
-/bootstrap/cache/
+/bootstrap/cache/packages.php
+/bootstrap/cache/services.php
 /node_modules/
 /public/build/
 /public/hot/
