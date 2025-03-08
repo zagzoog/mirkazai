@@ -59,7 +59,6 @@ use App\Http\Controllers\Themes\ThemeController;
 use App\Http\Controllers\TTSController;
 use App\Http\Controllers\Voice\ElevenlabVoiceController;
 use App\Http\Middleware\CheckTemplateTypeAndPlan;
-use App\Services\DeFi\DeFi;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
@@ -85,7 +84,7 @@ Route::group([
                 ->get('/', [UserController::class, 'redirect'])
                 ->name('index');
 
-            DeFi::routes();
+            // DeFi::routes(); // Removed or commented out since class is not found
 
             // User Area
             Route::prefix('user')
@@ -657,6 +656,10 @@ Route::group([
                         Route::get('/serperapi', [SettingsController::class, 'serperapi'])->name('serperapi');
                         Route::get('/serperapi/test', [SettingsController::class, 'serperapiTest'])->name('serperapi.test');
                         Route::post('/serperapi-save', [SettingsController::class, 'serperapiSave']);
+
+                        Route::get('/groq', [SettingsController::class, 'groq'])->name('groq');
+                        Route::get('/groq/test', [SettingsController::class, 'groqTest'])->name('groq.test');
+                        Route::post('/groq-save', [SettingsController::class, 'groqSave']);
 
                         Route::get('/tts', [SettingsController::class, 'tts'])->name('tts');
                         Route::post('/tts-save', [SettingsController::class, 'ttsSave']);

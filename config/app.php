@@ -209,6 +209,7 @@ return [
         App\Domains\Entity\EntityServiceProvider::class,
         App\Domains\Engine\EngineServiceProvider::class,
         App\Providers\OpenAIServiceProvider::class,
+        App\Providers\GroqServiceProvider::class,
 
         /**
          * Laravel Json Localization Manager

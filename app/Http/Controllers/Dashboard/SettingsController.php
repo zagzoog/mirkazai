@@ -1000,4 +1000,27 @@ class SettingsController extends Controller
 
         return response()->json($content);
     }
+
+    public function groq(Request $request)
+    {
+        if (Helper::appIsDemo()) {
+            return to_route('dashboard.user.index')->with([
+                'status'  => 'error',
+                'message' => trans('This feature is disabled in demo mode.'),
+            ]);
+        }
+
+        return view('panel.admin.settings.groq');
+    }
+
+    public function groqSave(Request $request)
+    {
+        if (Helper::appIsNotDemo()) {
+            setting([
+                'groq_api_key' => $request->groq_api_key,
+            ])->save();
+        }
+
+        return response()->json([], 200);
+    }
 }

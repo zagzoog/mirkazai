@@ -13,6 +13,7 @@ use App\Domains\Engine\Drivers\ElevenlabsEngineDriver;
 use App\Domains\Engine\Drivers\FallAIEngineDriver;
 use App\Domains\Engine\Drivers\GeminiEngineDriver;
 use App\Domains\Engine\Drivers\GoogleEngineDriver;
+use App\Domains\Engine\Drivers\GroqEngineDriver;
 use App\Domains\Engine\Drivers\HeygenEngineDriver;
 use App\Domains\Engine\Drivers\OpenAIEngineDriver;
 use App\Domains\Engine\Drivers\OpenRouterEngineDriver;
@@ -88,6 +89,15 @@ enum EngineEnum: string implements Contracts\WithStringBackedEnum
 
     case OPEN_ROUTER = 'open_router';
 
+    case GROQ = 'groq';
+
+    case PERPLEXITY_LLAMA_31_SONAR_8B_ONLINE = 'perplexity_llama_31_sonar_8b_online';
+    case PERPLEXITY_LLAMA_31_SONAR_8B = 'perplexity_llama_31_sonar_8b';
+    case GROQ_LLAMA2_70B = 'groq_llama2_70b';
+    case GROQ_MIXTRAL_8X7B = 'groq_mixtral_8x7b';
+    case GROQ_LLAMA2_70B_CHAT = 'groq_llama2_70b_chat';
+    case GROQ_MIXTRAL_8X7B_CHAT = 'groq_mixtral_8x7b_chat';
+
     public function label(): string
     {
         return match ($this) {
@@ -114,6 +124,13 @@ enum EngineEnum: string implements Contracts\WithStringBackedEnum
             self::PI_API                 => __('PiAPI'),
             self::AI_ML_MINIMAX          => __('AI/ML Minimax'),
             self::OPEN_ROUTER            => __('Open Router'),
+            self::GROQ                   => __('Groq'),
+            self::PERPLEXITY_LLAMA_31_SONAR_8B_ONLINE => __('Perplexity LLAMA 31 Sonar 8b Online'),
+            self::PERPLEXITY_LLAMA_31_SONAR_8B => __('Perplexity LLAMA 31 Sonar 8b'),
+            self::GROQ_LLAMA2_70B => __('Groq LLAMA2 70b'),
+            self::GROQ_MIXTRAL_8X7B => __('Groq MIXTRAL 8x7b'),
+            self::GROQ_LLAMA2_70B_CHAT => __('Groq LLAMA2 70b Chat'),
+            self::GROQ_MIXTRAL_8X7B_CHAT => __('Groq MIXTRAL 8x7b Chat'),
         };
     }
 
@@ -143,6 +160,13 @@ enum EngineEnum: string implements Contracts\WithStringBackedEnum
             self::FAL_AI           => FallAIEngineDriver::class,
             self::AI_ML_MINIMAX    => AiMlMinimaxAIEngineDriver::class,
             self::OPEN_ROUTER      => OpenRouterEngineDriver::class,
+            self::GROQ             => GroqEngineDriver::class,
+            self::PERPLEXITY_LLAMA_31_SONAR_8B_ONLINE => OpenRouterEngineDriver::class,
+            self::PERPLEXITY_LLAMA_31_SONAR_8B => OpenRouterEngineDriver::class,
+            self::GROQ_LLAMA2_70B => GroqEngineDriver::class,
+            self::GROQ_MIXTRAL_8X7B => GroqEngineDriver::class,
+            self::GROQ_LLAMA2_70B_CHAT => GroqEngineDriver::class,
+            self::GROQ_MIXTRAL_8X7B_CHAT => GroqEngineDriver::class,
         };
     }
 
@@ -231,7 +255,18 @@ enum EngineEnum: string implements Contracts\WithStringBackedEnum
             self::SYNTHESIA        => [EntityEnum::SYNTHESIA],
             self::HEYGEN           => [EntityEnum::HEYGEN],
             self::PEBBLELY         => [EntityEnum::PEBBLELY],
-
+            self::GROQ             => [
+                EntityEnum::fromSlug(setting('groq_default_model', EntityEnum::GROQ_MIXTRAL_8X7B_CHAT->slug())),
+                EntityEnum::GROQ_LLAMA2_70B,
+                EntityEnum::GROQ_MIXTRAL_8X7B,
+                EntityEnum::GROQ_LLAMA2_70B_CHAT,
+            ],
+            self::PERPLEXITY_LLAMA_31_SONAR_8B_ONLINE => [EntityEnum::PERPLEXITY_LLAMA_31_SONAR_8B_ONLINE],
+            self::PERPLEXITY_LLAMA_31_SONAR_8B => [EntityEnum::PERPLEXITY_LLAMA_31_SONAR_8B],
+            self::GROQ_LLAMA2_70B => [EntityEnum::GROQ_LLAMA2_70B],
+            self::GROQ_MIXTRAL_8X7B => [EntityEnum::GROQ_MIXTRAL_8X7B],
+            self::GROQ_LLAMA2_70B_CHAT => [EntityEnum::GROQ_LLAMA2_70B_CHAT],
+            self::GROQ_MIXTRAL_8X7B_CHAT => [EntityEnum::GROQ_MIXTRAL_8X7B_CHAT],
             default                => throw new Exception('No default model found for engine ' . $this->value),
         };
     }
@@ -243,6 +278,7 @@ enum EngineEnum: string implements Contracts\WithStringBackedEnum
             self::ANTHROPIC        => EntityEnum::fromSlug(setting('anthropic_default_model', EntityEnum::CLAUDE_3_OPUS->slug())),
             self::GEMINI           => EntityEnum::fromSlug(setting('gemini_default_model', EntityEnum::GEMINI_1_5_PRO_LATEST->slug())),
             self::DEEP_SEEK        => EntityEnum::fromSlug(setting('deepseek_default_model', EntityEnum::DEEPSEEK_CHAT->slug())),
+            self::GROQ             => EntityEnum::fromSlug(setting('groq_default_model', EntityEnum::GROQ_MIXTRAL_8X7B_CHAT->slug())),
             default                => throw new Exception('No default model found for engine ' . $this->value),
         };
     }
@@ -316,5 +352,41 @@ enum EngineEnum: string implements Contracts\WithStringBackedEnum
                     ]];
                 })->toArray()];
             })->dot()->toArray();
+    }
+
+    /** @noinspection PhpDuplicateMatchArmBodyInspection */
+    public function unitPrice(): float
+    {
+        return match ($this) {
+            self::PERPLEXITY_LLAMA_31_SONAR_8B_ONLINE => 0.005,
+            self::PERPLEXITY_LLAMA_31_SONAR_8B => 0.005,
+            self::GROQ_LLAMA2_70B => 0.0007,
+            self::GROQ_MIXTRAL_8X7B => 0.0007,
+            self::GROQ_LLAMA2_70B_CHAT => 0.0007,
+            self::GROQ_MIXTRAL_8X7B_CHAT => 0.0007,
+            default => throw new Exception('No unit price found for engine ' . $this->value),
+        };
+    }
+
+    public static function getPlanLimits(EngineEnum $engine): Collection
+    {
+        return collect(self::cases())
+            ->filter(fn (EngineEnum $e) => $e === $engine)
+            ->mapWithKeys(function (EngineEnum $e) {
+                return [$e => EntityEnum::getPlanLimits($e)];
+            });
+    }
+
+    public function subLabel(): string
+    {
+        return match ($this) {
+            self::PERPLEXITY_LLAMA_31_SONAR_8B_ONLINE => 0.005,
+            self::PERPLEXITY_LLAMA_31_SONAR_8B => 0.005,
+            self::GROQ_LLAMA2_70B => 0.0007,
+            self::GROQ_MIXTRAL_8X7B => 0.0007,
+            self::GROQ_LLAMA2_70B_CHAT => 0.0007,
+            self::GROQ_MIXTRAL_8X7B_CHAT => 0.0007,
+            default => throw new Exception('No sub label found for engine ' . $this->value),
+        };
     }
 }

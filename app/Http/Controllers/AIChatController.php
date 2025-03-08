@@ -46,6 +46,7 @@ use Random\RandomException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Throwable;
 use ZipArchive;
+use App\Services\Groq\GroqService;
 
 class AIChatController extends Controller
 {

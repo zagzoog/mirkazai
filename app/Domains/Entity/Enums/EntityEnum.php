@@ -24,6 +24,7 @@ use App\Domains\Entity\Drivers\ElevenLabs;
 use App\Domains\Entity\Drivers\FalAI;
 use App\Domains\Entity\Drivers\Gemini;
 use App\Domains\Entity\Drivers\GoogleDriver;
+use App\Domains\Entity\Drivers\Groq\GroqDriver;
 use App\Domains\Entity\Drivers\HeygenDriver;
 use App\Domains\Entity\Drivers\OpenAI;
 use App\Domains\Entity\Drivers\OpenRouter;
@@ -251,6 +252,12 @@ enum EntityEnum: string
 
     case FAST_ANIMATEDIFF_TURBO = 'fast-animatediff/turbo/video-to-video';
 
+    // Groq
+    case GROQ_LLAMA2_70B = 'llama2-70b-4096';
+    case GROQ_MIXTRAL_8X7B = 'mixtral-8x7b-32768';
+    case GROQ_LLAMA2_70B_CHAT = 'llama2-70b-4096-chat';
+    case GROQ_MIXTRAL_8X7B_CHAT = 'mixtral-8x7b-32768-chat';
+
     public static function listableCases(): Collection
     {
         return collect(self::cases())->map(
@@ -313,7 +320,7 @@ enum EntityEnum: string
             self::DALL_E_3               => __('DALL-E 3 The latest DALL·E model released in Nov 2023.'),
             self::TTS_1                  => __('TTS 1 The latest text to speech model, optimized for speed.'),
             self::TTS_1_HD               => __('TTS 1 HD The latest text to speech model, optimized for quality.'),
-            self::GPT_4_O                => __('GPT-4o Most advanced, multimodal flagship model that’s cheaper and faster than GPT-4 Turbo.  (Updated Knowleddge cutoff of Oct 2023, 128k)'),
+            self::GPT_4_O                => __('GPT-4o Most advanced, multimodal flagship model that cheaper and faster than GPT-4 Turbo. Updated Knowleddge cutoff of Oct 2023, 128k'),
             self::GPT_4_O_MINI           => __('GPT-4o mini Our affordable and intelligent small model for fast, lightweight tasks. GPT-4o mini is cheaper and more capable than GPT-3.5 Turbo.'),
             self::GPT_4_O1_PREVIEW       => __('GPT o1-preview (Updated Knowledge cutoff of Dec 2023, 128k)'),
             self::GPT_4_O1_MINI          => __('GPT o1-mini (Updated Knowledge cutoff of Dec 2023, 128k)'),
@@ -406,6 +413,11 @@ enum EntityEnum: string
             self::PERPLEXITY_LLAMA_31_SONAR_70B                      => __('Perplexity: Llama 3.1 Sonar 70B'),
             self::PERPLEXITY_LLAMA_31_SONAR_8B_ONLINE                => __('Perplexity: Llama 3.1 Sonar 8B Online'),
             self::PERPLEXITY_LLAMA_31_SONAR_8B                       => __('Perplexity: Llama 3.1 Sonar 8B'),
+            // Groq
+            self::GROQ_LLAMA2_70B                                   => __('Groq: Llama 2 70B'),
+            self::GROQ_MIXTRAL_8X7B                                 => __('Groq: Mixtral 8x7B'),
+            self::GROQ_LLAMA2_70B_CHAT                              => __('Groq: Llama 2 70B Chat'),
+            self::GROQ_MIXTRAL_8X7B_CHAT                            => __('Groq: Mixtral 8x7B Chat'),
         };
     }
 
@@ -550,6 +562,11 @@ enum EntityEnum: string
             self::PERPLEXITY_LLAMA_31_SONAR_70B,
             self::PERPLEXITY_LLAMA_31_SONAR_8B_ONLINE,
             self::PERPLEXITY_LLAMA_31_SONAR_8B  => EngineEnum::OPEN_ROUTER,
+            // Groq
+            self::GROQ_LLAMA2_70B,
+            self::GROQ_MIXTRAL_8X7B,
+            self::GROQ_LLAMA2_70B_CHAT,
+            self::GROQ_MIXTRAL_8X7B_CHAT => EngineEnum::GROQ,
         };
     }
 
@@ -677,6 +694,11 @@ enum EntityEnum: string
             self::PERPLEXITY_LLAMA_31_SONAR_70B                      => OpenRouter\PerplexityLlama31Sonar70B::class,
             self::PERPLEXITY_LLAMA_31_SONAR_8B_ONLINE                => OpenRouter\PerplexityLlama31Sonar8BOnline::class,
             self::PERPLEXITY_LLAMA_31_SONAR_8B                       => OpenRouter\PerplexityLlama31Sonar8B::class,
+             // Groq
+             self::GROQ_LLAMA2_70B,
+             self::GROQ_MIXTRAL_8X7B,
+             self::GROQ_LLAMA2_70B_CHAT,
+             self::GROQ_MIXTRAL_8X7B_CHAT => GroqDriver::class,
         };
     }
 
@@ -783,6 +805,11 @@ enum EntityEnum: string
             self::PERPLEXITY_LLAMA_31_SONAR_70B                      => 0.005,
             self::PERPLEXITY_LLAMA_31_SONAR_8B_ONLINE                => 0.005,
             self::PERPLEXITY_LLAMA_31_SONAR_8B                       => 0.005,
+            // Groq
+            self::GROQ_LLAMA2_70B                                   => 0.0007,
+            self::GROQ_MIXTRAL_8X7B                                 => 0.0007,
+            self::GROQ_LLAMA2_70B_CHAT                              => 0.0007,
+            self::GROQ_MIXTRAL_8X7B_CHAT                            => 0.0007,
         };
     }
 
